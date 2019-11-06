@@ -17,17 +17,9 @@ typedef struct c conta;
 conta from, to;
 int valor;
 
-/* 
-Variável utilizada como trava condicional:
-0 -> Falso, trava fechada
-1 -> Verdadeiro, trava aberta
-*/
-int disp = 1; 
-
 // Função executada pelas Threads
 int transferencia( void *arg){
 
-    disp = 0; // Fechando Trava.
     if (from.saldo >= valor){ // 2
         from.saldo -= valor;
         to.saldo += valor;
@@ -37,7 +29,6 @@ int transferencia( void *arg){
     printf("Saldo de c2: %d\n", to.saldo);
     printf("Transferência concluída com sucesso!\n");
 
-    disp = 1; // Abrindo Trava.
     return 0;
 }
 int main()
@@ -62,10 +53,8 @@ int main()
     valor = 10;
     for (i = 0; i < 100; i++) {
 
-        while (disp == 0){ // Trava Fechada
-            sleep(0.1); 
-            printf("Estou esperando\n");
-        }
+        sleep(1); // Adicionando tempo de espera entre cada loop.
+
         // Chamada para criar uma nova thread
         pid = clone( &transferencia, (char*) stack + FIBER_STACK,
         SIGCHLD | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_VM, 0 );
