@@ -3,6 +3,7 @@
 #include <malloc.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <unistd.h>
 #include <signal.h>
 #include <sched.h>
 #include <stdio.h>
@@ -12,20 +13,31 @@ struct c {
     int saldo;
 };
 typedef struct c conta;
+
 conta from, to;
 int valor;
 
+/* 
+Variável utilizada como trava condicional:
+0 -> Falso, trava fechada
+1 -> Verdadeiro, trava aberta
+*/
+int disp = 1; 
 
-// The child thread will execute this function
+// Função executada pelas Threads
 int transferencia( void *arg){
 
+    disp = 0; // Fechando Trava.
     if (from.saldo >= valor){ // 2
         from.saldo -= valor;
         to.saldo += valor;
     }
-    printf("Transferência concluída com sucesso!\n");
+
     printf("Saldo de c1: %d\n", from.saldo);
     printf("Saldo de c2: %d\n", to.saldo);
+    printf("Transferência concluída com sucesso!\n");
+
+    disp = 1; // Abrindo Trava.
     return 0;
 }
 int main()
@@ -33,20 +45,28 @@ int main()
     void* stack;
     pid_t pid;
     int i;
-    // Allocate the stack
+
+    // Alocando espaço no stack
     stack = malloc( FIBER_STACK );
     if ( stack == 0 )
     {
         perror("malloc: could not allocate stack");
         exit(1);
     }
-    // Todas as contas começam com saldo 100
-    from.saldo = 100;
-    to.saldo = 100;
+    // Todas as contas começam com saldo 1000
+    from.saldo = 1000;
+    to.saldo = 1000;
+
+
     printf( "Transferindo 10 para a conta c2\n" );
     valor = 10;
-    for (i = 0; i < 10; i++) {
-        // Call the clone system call to create the child thread
+    for (i = 0; i < 100; i++) {
+
+        while (disp == 0){ // Trava Fechada
+            sleep(0.1); 
+            printf("Estou esperando\n");
+        }
+        // Chamada para criar uma nova thread
         pid = clone( &transferencia, (char*) stack + FIBER_STACK,
         SIGCHLD | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_VM, 0 );
 
@@ -55,7 +75,7 @@ int main()
             exit(2);
         }
     }
-    // Free the stack
+    // Liberando o Stack
     free( stack );
     printf("Transferências concluídas e memória liberada.\n");
     return 0;
