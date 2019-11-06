@@ -10,3 +10,6 @@ Abordamos o problema com 3 estratégias as quais cada uma será publicada em sua
 - Tempo de Espera
 - Semáforos 
 
+# O PROBLEMA
+O problema encontrado no exercício passado é a condição de corrida. Isto ocorre quando o processo depende de uma sequência e/ou ocorrência de outro evento. Neste caso nosso evento é o acesso aos Saldos. 
+Quando uma thread acessa o saldo ela impossibilita o acesso das outras. Ou seja, nossas threads são dependentes do resultado da thread anterior. 
