@@ -9,13 +9,13 @@ Vamos passar por alguns comandos utilizados ao decorrer do programa:\
 `#include <pthread>`: Incluindo a biblioteca.\
 `pthread_t t_thread[100]`: Criamos uma array de 100 espaços do tipo pthread_t.\
 `pthread_create(&t_thread[i], NULL, transferencia, 0);`: Esta função cria/inicia uma pthread_t ao decorrer da array.\
-`pthread_join(t_thread[i], NULL);`: Espera as threads finalizarem.\
+`pthread_join(t_thread[i], NULL);`: Espera as threads finalizarem.
 
 # COMPLICAÇÕES
 Um problema que estava ocorrendo depois da implementação das pthreads era que apesar do programa não apresentar nenhum erro ele não finalizava todas as operações.
 Isto ocorria devido o for loop acabar antes da execução das pthreads e a main thread ao chegar no comando `return(0);` finalizava todas suas filhas.
 Por isso, foi utilizado o comando `pthread_join` para que a main thread espere a execução das "filhas" não finalizadas.
 
-# ERRO DA SOLUÇÃO
-Em algumas execuções a última thread não é executada, mais isso ocorre com uma frequência muita baixa e provavelmente pelo mesmo motivo do tópico **COMPLICAÇÕES**. 
+# PROBLEMA DA SOLUÇÃO
+Em algumas execuções a última thread não é executada, mas isso ocorre com uma frequência muita baixa e provavelmente pelo mesmo motivo do tópico **COMPLICAÇÕES**. 
 
