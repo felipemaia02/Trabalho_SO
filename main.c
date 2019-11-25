@@ -20,6 +20,13 @@ Variável utilizada como trava condicional:
 */
 int disp = 1; 
 
+/* 
+Variável utilizada para determinar fluxo da conta:
+0 -> From transfere para To
+1 -> To transfere para From
+*/
+int flux = 0;
+
 // Função executada pelas Threads
 void *transferencia( void *arg){
 
@@ -28,10 +35,19 @@ void *transferencia( void *arg){
 
     disp = 0; // Fechando a Trava.
 
-    if (from.saldo >= valor){ // 2
-        from.saldo -= valor;
-        to.saldo += valor;
+    if (flux == 0){
+        if (from.saldo >= valor){ // 2
+            from.saldo -= valor;
+            to.saldo += valor;
+        }
     }
+    else{
+        if (to.saldo >= valor){ // 2
+            to.saldo -= valor;
+            from.saldo += valor;
+        }
+    }
+    
 
     printf("Saldo de c1: %d\n", from.saldo);
     printf("Saldo de c2: %d\n", to.saldo);
@@ -51,18 +67,28 @@ int main()
     valor = 10;
 
     
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 50; i++) {
 
         // Chamada para criar uma nova thread
-        pthread_create(&t_thread[i], NULL, transferencia, 0);
+        pthread_create(&t_thread[i], NULL, transferencia, NULL);
     }
 
-    // for loop para esperar a execução das threads não finalizadas.
-    for (int i = 0; i < 100; i++)
+    // for loop para esperar a execução das threads não finalizadas do PRIMEIRO fluxo
+    for (int i = 0; i < 50; i++)
+       pthread_join(t_thread[i], NULL);
+
+    flux = 1; // Trocando o fluxo de transferência
+
+    for (int i = 50; i < 100; i++) {
+
+        // Chamada para criar uma nova thread
+        pthread_create(&t_thread[i], NULL, transferencia, NULL);
+    }
+
+     // for loop para esperar a execução das threads não finalizadas do SEGUNDO fluxo
+    for (int i = 50; i < 100; i++)
        pthread_join(t_thread[i], NULL);
 
     printf("Transferências concluídas e memória liberada.\n");
-    printf("Valor da conta from: %d \n", from.saldo);
-    printf("Valor da conta to: %d \n", to.saldo);
     return 0;
 }
