@@ -5,10 +5,9 @@ conectados.
 Mais informações sobre o projeto podem ser encontrados no arquivo oferecido pelo professor Eduardo Santos no arquivo: `Plano Projeto Final.pdf` 
 
 # DIVISÃO
-Abordamos o problema com 3 estratégias as quais cada uma será publicada em sua branch específica, sendo a última branch "Semáforos" é resolução final.
-- Trava Condicional
+Abordamos o problema com 3 estratégias as quais cada uma será publicada em sua branch específica, sendo a última branch "Trava Condicional" a resolução final.
 - Tempo de Espera
-- Semáforos 
+- Trava Condicional
 
 # O PROBLEMA
 O problema encontrado no exercício passado é a condição de corrida. Isto ocorre quando o processo depende de uma sequência e/ou ocorrência de outro evento. Neste caso nosso evento é o acesso aos Saldos. 
