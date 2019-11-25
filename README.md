@@ -6,14 +6,11 @@ Sendo assim, ao adicionarmos uma trava para o acesso das threads podemos impedir
 # P_THREAD
 Alteramos o código para utilizar a biblioteca p_thread, uma biblioteca dedicada à criação e organização das mesmas.
 Vamos passar por alguns comandos utilizados ao decorrer do programa:\
-\
-`#include <pthread>`: Incluindo a biblioteca.\
-\
-`pthread_t t_thread[100]`: Criamos uma array de 100 espaços do tipo pthread_t.\
-\
-`pthread_create(&t_thread[i], NULL, transferencia, 0);`: Esta função cria/inicia uma pthread_t ao decorrer da array.\
-\
-`pthread_join(t_thread[i], NULL);`: Espera as threads finalizarem.
+
+- `#include <pthread>`: Incluindo a biblioteca.
+- `pthread_t t_thread[100]`: Criamos uma array de 100 espaços do tipo pthread_t.
+- `pthread_create(&t_thread[i], NULL, transferencia, 0);`: Esta função cria/inicia uma pthread_t ao decorrer da array.
+- `pthread_join(t_thread[i], NULL);`: Espera as threads finalizarem.
 
 # COMPLICAÇÕES
 Um problema que estava ocorrendo depois da implementação das pthreads era que apesar do programa não apresentar nenhum erro ele não finalizava todas as operações.
