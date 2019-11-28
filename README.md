@@ -14,7 +14,7 @@ O problema encontrado no exercício passado é a condição de corrida. Isto oco
 Quando uma thread acessa o saldo ela impossibilita o acesso das outras. Ou seja, nossas threads são dependentes do resultado da thread anterior. 
 
 
-Alunos:
-Felipe Maia
-João Pedro Gontijo
-Leonardo Barbosa
+# INEGRANTES
+- Felipe Maia
+- João Pedro Gontijo
+- Leonardo Barbosa
